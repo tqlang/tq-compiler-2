@@ -87,7 +87,7 @@ internal static class Extensions
         list.Clear();
         return array;
     }
-    
+
     public static string TabAll(this string? str)
     {
         if (str == null) return "<nil>";
