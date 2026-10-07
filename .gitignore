@@ -1,5 +1,8 @@
-bin/
-obj/
-/packages/
+.vscode/
+
+.build/
+/Packages
+.swiftpm/
+xcuserdata/
 riderModule.iml
 /_ReSharper.Caches/

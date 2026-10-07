@@ -25,15 +25,13 @@ cache-dir = ".tq-cache"
 [[module]]
     name = "Std"
     path = "./Lib/Std"
-    dependencies = [
-        "module : Dotnet",
-    ]
+    #dependencies = [ "module : Dotnet", ]
 
-[[module]]
-    type = "dotnet"
-    name = "Dotnet"
-    dependencies = [
-        "dotnet : System.Runtime : 10.0.0.0",
-        "dotnet : System.Console : 10.0.0.0",
-        "dotnet : System.Collections : 10.0.0.0",
-    ]
+# [[module]]
+#     type = "dotnet"
+#     name = "Dotnet"
+#     dependencies = [
+#         "dotnet : System.Runtime : 10.0.0.0",
+#         "dotnet : System.Console : 10.0.0.0",
+#         "dotnet : System.Collections : 10.0.0.0",
+#     ]
