@@ -19,6 +19,17 @@ public record ProtocolTypeReference(IProtocol Protocol) : Ref, IBuiltinTypeRef
     public override string ToString() => Protocol.Name;
 }
 
+public record FunctionTypeReference(IFunction Function) : Ref, IBuiltinTypeRef
+{
+    public override string ToString() => Function.Name;
+}
+
+public record FunctionGroupTypeReference(IFunctionGroup FunctionGroup) : Ref, IBuiltinTypeRef
+{
+    public override string ToString() => FunctionGroup.Name;
+}
+
+
 public interface IBuiltinTypeRef : ITypeRef;
 
 public record BooleanTypeRef() : Ref, IBuiltinTypeRef;
@@ -38,3 +49,13 @@ public record CharacterTypeRef() : Ref, IBuiltinTypeRef;
 public record StringTypeRef() : Ref, IBuiltinTypeRef;
 
 public record ReferenceTypeRef(ITypeRef Referred) : Ref, IBuiltinTypeRef;
+
+public record TypeMetaReference(IType Type) : Ref, IBuiltinTypeRef
+{
+    public override string ToString() => Type.Name;
+}
+
+public record NamespaceReference(INamespace Namespace) : Ref, IBuiltinTypeRef
+{
+    public override string ToString() => Namespace.Name;
+}

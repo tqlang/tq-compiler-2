@@ -14,7 +14,7 @@ public static class SemanticAnalyser
         };
         return module;
     }
-
+    
     public static void BindReferences(IModule module, IModule[] dependencies)
     {
         if (module is not TqModule @tqModule) throw new ArgumentException("module is not TqModule", nameof(module));

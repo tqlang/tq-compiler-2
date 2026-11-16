@@ -1,6 +1,7 @@
-using System.ComponentModel.Design;
+using Tqc.IR.Nodes;
 using Tqc.IR.ProgramMembers;
 using Tqc.IR.ProgramMembers.Tq;
+using Tqc.IR.References;
 
 namespace Tqc.Semantics;
 
@@ -39,10 +40,10 @@ internal static class ReferenceBinder
     {
         var namespaceReference = importMember.NamespaceReference;
         
-        var member = ctx.TryGet(namespaceReference[0]);
-        if (member == null) throw new NotImplementedException($"No module named '{namespaceReference[0]}' ({importMember.Location})");
-        if (member is not INamespace @namespaceMember) throw new NotImplementedException($"'{namespaceReference[0]}' is not a namespace");
-        var referredNamespace = namespaceMember;
+        var memberRef = ctx.TryGet(namespaceReference[0]);
+        if (memberRef == null) throw new NotImplementedException($"No module named '{namespaceReference[0]}' ({importMember.Location})");
+        if (memberRef is not NamespaceReference @namespaceMemberRef) throw new NotImplementedException($"'{namespaceReference[0]}' is not a namespace");
+        var referredNamespace = namespaceMemberRef.Namespace;
 
         foreach (var i in namespaceReference[1..])
         {
@@ -94,25 +95,47 @@ internal static class ReferenceBinder
     private static void ResolveFunction(ScopeContext ctx, TqFunction function)
     {
         
+        foreach (var p in function.Parameters)
+        {
+            //p.Type = Guard.Try(() => ResolveExpression(ctx, p.Type),); 
+            if (p.DefaultValue != null) p.DefaultValue = ResolveExpression(ctx, p.DefaultValue);
+        }
+        
+        if (function.ReturnType != null) function.ReturnType = ResolveExpression(ctx, function.ReturnType);
+        if (function.Body != null) ResolveBody(ctx, function.Body);
+    }
+
+    private static void ResolveBody(ScopeContext ctx, IrBody body)
+    {
+        
     }
     
+    private static IrExpression ResolveExpression(ScopeContext ctx, IrExpression expression)
+    {
+        throw new NotImplementedException();
+    }
 
+    private static Ref ResolveReference(ScopeContext ctx, string name)
+    {
+        throw new NotImplementedException();
+    }
+    
     private class ScopeContext
     {
-        private List<(string name, IMember member)> references = [];
+        private List<(string name, Ref reference)> references = [];
         private Stack<int> frames = [];
 
-        public void Add(IMember member) => references.Add((member.Name, member));
+        public void Add(IMember member) => references.Add((member.Name, member.GetReference()));
         public void Add(params IMember[] member)
         {
-            foreach (var i in member) references.Add((i.Name, i));
+            foreach (var i in member) references.Add((i.Name, i.GetReference()));
         }
-        public void AddWithAlias(IMember member, string alias) => references.Add((alias, member));
+        public void AddWithAlias(IMember member, string alias) => references.Add((alias, member.GetReference()));
 
-        public IMember? TryGet(string key)
+        public Ref? TryGet(string key)
         {
             for (var i = references.Count - 1; i >= 0; i--)
-                if (references[i].name == key) return references[i].member;
+                if (references[i].name == key) return references[i].reference;
             return null;
         }
         

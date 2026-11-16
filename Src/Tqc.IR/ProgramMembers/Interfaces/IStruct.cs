@@ -1,6 +1,6 @@
 namespace Tqc.IR.ProgramMembers;
 
-public interface IStruct : IMember
+public interface IStruct : IType
 {
     public string Name { get; }
 }

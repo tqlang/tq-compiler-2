@@ -13,7 +13,6 @@ public class DotnetClass(TypeReference typeRef, string name) : IStruct, IDotnetT
     
     public ImmutableDictionary<string, IMember> Members { get; set; }
     public ITypeRef? BaseType { get; set; }
-
     
     public override string ToString() => $"class {name}";
 }

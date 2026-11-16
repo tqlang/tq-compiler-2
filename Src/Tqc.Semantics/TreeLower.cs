@@ -182,7 +182,11 @@ public static class TreeLower
             parameters.Add(new TqParameter(paramType, paramName));
         }
 
-        var function = new TqFunction(name, [.. parameters], type, functionNode.GetLoc(ctx.SrcFile));
+        var function = new TqFunction(name, functionNode.GetLoc(ctx.SrcFile))
+        {
+            Parameters = [.. parameters],
+            ReturnType = type,
+        };
         if (functionNode.Body != null) function.Body = LowerScope(ctx, functionNode.Body);
         return function;
     }

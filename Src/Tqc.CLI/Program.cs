@@ -73,10 +73,12 @@ static class Program
                 {
                     var module = BuildTqModule(moduleDescriptor, diagnostics);
                     map.Add(moduleDescriptor, module);
-                    var dependencies = moduleDescriptor.Dependencies
-                        .OfType<ModuleReference>()
-                        .Select(reference => reference.Definition)
-                        .Select(definition => map[definition]);
+                    var dependencies = 
+                            moduleDescriptor.Dependencies
+                            .OfType<ModuleReference>()
+                            .Select(reference => reference.Definition)
+                            .Select(definition => map[definition]);
+                    
                     SemanticAnalyser.BindReferences(module, [..dependencies]);
                 } break;
                 
